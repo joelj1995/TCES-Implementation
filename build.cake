@@ -34,4 +34,25 @@ Task("Build")
 
     });
 
+
+Task("Test")
+    .IsDependentOn("Build")
+    .Does(() => {
+        DotNetTest("./Assembler/Assembler.sln", new DotNetTestSettings
+        {
+            Configuration = configuration,
+            NoBuild = true,
+        });
+        DotNetTest("./JackCompiler/JackCompiler.sln", new DotNetTestSettings
+        {
+            Configuration = configuration,
+            NoBuild = true,
+        });
+        DotNetTest("./VMtranslator/VMtranslator.sln", new DotNetTestSettings
+        {
+            Configuration = configuration,
+            NoBuild = true,
+        });
+    });
+
 RunTarget(target);
