@@ -47,6 +47,7 @@ namespace Assembler.Logic.Hack
             "D-1",
             "A-1",
             "D+A",
+            "A+D",
             "D-A",
             "A-D",
             "D&A",
@@ -156,7 +157,7 @@ namespace Assembler.Logic.Hack
             }
             var result = command.Substring(idxStart, idxEnd - idxStart);
             if (!Comps.Contains(result))
-                throw new ParserException($"{result} is not a recognzied dest.", lineNumber);
+                throw new ParserException($"{result} is not a recognzied comp.", lineNumber);
             return result;
         }
 

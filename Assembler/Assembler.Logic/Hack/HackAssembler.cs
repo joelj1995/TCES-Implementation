@@ -12,19 +12,19 @@ namespace Assembler.Logic.Hack
 
         public byte[] assemble(StreamReader assembly)
         {
-            try
-            {
+            //try
+            //{
                 BuildSymbolTable(assembly);
                 assembly.BaseStream.Seek(0, SeekOrigin.Begin);
                 var binaryCode = GenerateBinaryCode(assembly);
                 return Encoding.ASCII.GetBytes(binaryCode);
-            }
-            catch(ParserException e)
-            {
-                if (e.lineNumber != null)
-                    throw new SyntaxException((int)e.lineNumber, e.reason);
-                throw e;
-            }
+            //}
+            //catch(ParserException e)
+            //{
+            //    if (e.lineNumber != null)
+            //        throw new SyntaxException((int)e.lineNumber, e.reason);
+            //    throw e;
+            //}
         }
 
         public void BuildSymbolTable(StreamReader assembly)

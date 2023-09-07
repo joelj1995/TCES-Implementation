@@ -58,7 +58,10 @@ namespace SystemTest
 
         private void Assemble()
         {
-
+            var command = Path.Join(TestConfig.RepositoryRoot, "Assembler\\Assembler.CLI\\bin\\Release\\net6.0\\Assembler.CLI.exe");
+            var parameter = StagingDir;
+            var fullScript = $"& '{command}' '{parameter}\\'";
+            ExecutePowershellScript(fullScript);
         }
 
         private void Execute()

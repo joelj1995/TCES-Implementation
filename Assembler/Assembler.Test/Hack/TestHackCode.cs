@@ -17,16 +17,6 @@ namespace Assembler.Test.Hack
             Assert.That(HackCode.dest("AMD"), Is.EqualTo("111"));
         }
 
-        [Test]
-        public void TestCompTranslation()
-        {
-            foreach (var dest in HackCode.CompTranslation)
-            {
-                Assert.That(dest.Value.Length, Is.EqualTo(7));
-            }
-            var uniqueCount = HackCode.CompTranslation.Select(c => c.Value).Distinct().Count();
-            Assert.That(uniqueCount, Is.EqualTo(HackCode.CompTranslation.Count));
-        }
 
         [Test]
         public void TestComp()

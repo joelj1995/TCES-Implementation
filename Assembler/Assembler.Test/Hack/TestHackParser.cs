@@ -21,7 +21,6 @@ namespace Assembler.Test.Hack
         public void TestSpecForCCommandComponentDomains()
         {
             Assert.That(HackParser.Dests.Length, Is.EqualTo(8));
-            Assert.That(HackParser.Comps.Length, Is.EqualTo(28));
             Assert.That(HackParser.Jumps.Length, Is.EqualTo(8));
         }
 

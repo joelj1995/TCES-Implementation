@@ -10,7 +10,7 @@ namespace Assembler.Logic.Hack
     {
         public string reason;
         public int? lineNumber;
-        public ParserException(string reason, int lineNumber)
+        public ParserException(string reason, int lineNumber) : base(reason)
         {
             this.reason = reason;
             this.lineNumber = lineNumber;
