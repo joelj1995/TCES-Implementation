@@ -1,0 +1,125 @@
+class String {
+
+    field int maxLength;
+    field int curLength;
+    field Array str;
+
+    constructor String new(int _maxLength) {
+        let maxLength = _maxLength;
+        let curLength = 0;
+        if (maxLength > 0) {
+            let str = Array.new(maxLength);
+        }
+        return this;
+    }
+
+    method void dispose() {
+        if (maxLength = 0) {
+            return;
+        }
+        do str.dispose();
+        return;
+    }
+
+    method int length() {
+        return curLength;
+    }
+
+    method char charAt(int j) {
+        return str[j];
+    }
+
+    method void setCharAt(int j, char c) {
+        let str[j] = c;
+        return;
+    }
+
+    method String appendChar(char c) {
+        let str[curLength] = c;
+        let curLength = curLength + 1;
+        return this;
+    }
+
+    method void eraseLastChar() {
+        let curLength = curLength - 1;
+        return;
+    }
+
+    method int intValue() {
+        var int i;
+        var boolean done;
+        var boolean negate;
+        var int sum;
+        let i = 0;
+        let done = false;
+        let negate = false;
+        let sum = 0;
+        if (curLength > 0) {
+            if (str[0] = 45) {
+                let negate = true;
+                let i = 1;
+            }
+        }
+        while (~done) {
+            if ((i = curLength) | done) {
+                if (negate) {
+                    return -sum;
+                }
+                return sum;
+            }
+            if (str[i] > 47 & str[i] < 58) {
+                let sum = (sum * 10) + (str[i] - 48); 
+            }
+            else {
+                let done = true;
+            }
+            let i = i + 1;
+        }
+        return 0; // shouldn't be able to get here
+    }
+
+    method String setInt(int n) {
+        if (n < 0) {
+            do setIntR(-n, true);
+        } else {
+            do setIntR(n, false);
+        }
+        return this;
+    }
+
+    method String setIntR(int n, boolean negative) {
+        var int lastDigit;
+        var int c;
+        var String tmp;
+        let lastDigit =  n - ((n / 10) * 10);
+        let c = lastDigit + 48;
+        if (n < 10) {
+            let curLength = 0;
+            if (negative) {
+                do setCharAt(curLength, 45);
+                let curLength = curLength + 1;
+            }
+            do setCharAt(curLength, c);
+            let curLength = curLength + 1;
+            return this;
+        }
+        else {
+            let tmp = setIntR(n/10, negative);
+            do tmp.appendChar(c);
+            return tmp;
+        }
+    }
+
+    function char backSpace() {
+        return 129;
+    }
+
+    function char doubleQuote() {
+        return 34;
+    }
+
+    function char newLine() {
+        return 128;
+    }
+
+}

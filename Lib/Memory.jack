@@ -1,0 +1,50 @@
+// This file is part of the materials accompanying the book 
+// "The Elements of Computing Systems" by Nisan and Schocken, 
+// MIT Press. Book site: www.idc.ac.il/tecs
+// File name: projects/12/Memory.jack
+
+/**
+ * Memory operations library.
+ */ 
+class Memory {
+
+    static int pmemory;
+    static int pheap;
+    static int pheapend;
+    static int free;
+
+    /** Initializes memory parameters. */
+    function void init() {
+        let pmemory = 0;
+        let pheap = 2048;
+        let pheapend = 16383;
+        let free = pheap;
+        return;
+    }
+
+    /** Returns the value of the main memory at this address. */
+    function int peek(int address) {
+        return pmemory[address];
+    }
+
+    /** Sets the value of the main memory at this address
+     *  to the given value. */
+    function void poke(int address, int value) {
+        let pmemory[address] = value;
+        return;
+    }
+
+    /** finds and allocates from the heap a memory block of the 
+     *  specified size and returns a reference to its base address. */
+    function int alloc(int size) {
+        var int result;
+        let result = free;
+        let free = free + size;
+        return result;
+    }
+
+    /** De-allocates the given object and frees its space. */
+    function void deAlloc(int object) {
+        return;
+    }    
+}

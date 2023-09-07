@@ -1,0 +1,115 @@
+class Math {
+
+    static int n; // word size
+    static int halfn; // half word (n / 2)
+
+    function void init() {
+        let n = 16;
+        let halfn = 8;
+        return;
+    }
+
+    function int abs(int x) {
+        if (x < 0) {
+            return -x;
+        }
+        else {
+            return x;
+        }
+    }
+
+    function int multiply(int x, int y) {
+        var int sum;
+        var int shiftedX;
+        var int j;
+        var int shiftBit;
+        let sum = 0;
+        let shiftedX = x;
+        let j = 0;
+        let shiftBit = 1;
+        while (j < n) {
+            if (~((y & shiftBit) = 0)) { // j-th bit of y
+                let sum = sum + shiftedX;
+            }
+            let shiftedX = shiftedX + shiftedX;
+            let shiftBit = shiftBit + shiftBit;
+            let j = j + 1;
+        }
+        return sum;
+    }
+
+    function int divide(int x, int y) {
+        var int absresult;
+        let absresult = Math.divider(Math.abs(x), Math.abs(y));
+        if ((x > 0) & (y > 0)) {
+            return absresult;
+        }
+        if ((x < 0) & (y < 0)) {
+            return absresult;
+        }
+        return - absresult;
+    }
+
+    function int divider(int x, int y) {
+        var int q;
+        if (y > x) {
+            return 0;
+        }
+        let q = Math.divider(x, 2*y);
+        if ((x - (2 * (q * y))) < y) {
+            return 2 * q;
+        }
+        else {
+            return (2 * q) +  1;
+        }
+    }
+
+    function int min(int x, int y) {
+        if (x < y) {
+            return x;
+        }
+        else {
+            return y;
+        }
+    }
+
+    function int max(int x, int y) {
+        if (x > y) {
+            return x;
+        }
+        else {
+            return y;
+        }
+    }
+
+    function int sqrt(int x) {
+        var int y;
+        var int j;
+        var int c; // (y + 2^j)
+        var int c2; // (y + 2^j) ^ 2
+        let y = 0;
+        let j = halfn - 1;
+        while (j > (-1)) {
+            let c = y + Math.pow(2, j);
+            let c2 = Math.pow(c, 2);
+            if ((c2 - 1 < (x)) & (c2 > 0)) {
+                let y = c;
+            }
+            let j = j - 1;
+        }
+        return y;
+    }
+
+    function int pow(int x, int y) {
+        var int i;
+        var int result;
+        let i = 0;
+        let result = 1;
+        while (i < y) {
+            let result = Math.multiply(result, x);
+            let i = i + 1;
+        }
+        return result;
+    }
+
+}
