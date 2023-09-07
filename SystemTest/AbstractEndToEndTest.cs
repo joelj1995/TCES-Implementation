@@ -94,5 +94,7 @@ namespace SystemTest
         }
 
         public string StagingDir => Path.Join(TestConfig.RepositoryRoot, "SystemTest\\Staging\\");
+
+        protected static readonly ICollection<string> OSImports = new[] { "Array", "Keyboard", "Math", "Memory", "Output", "Screen", "Sys" };
     }
 }

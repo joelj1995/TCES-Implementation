@@ -35,7 +35,7 @@ class Screen {
         let bitMask[14] = 16384; 
         let bitMask[15] = 32767;
         let bitMask[15] = bitMask[15] + 1;
-        do Screen.clearScreen();
+        // do Screen.clearScreen();
         return;
     }
 

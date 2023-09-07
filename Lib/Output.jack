@@ -44,6 +44,7 @@ class Output {
     
         let charMaps = Array.new(127);
         
+        /*
         // black square (used for non printable characters)
         do Output.create(0,63,63,63,63,63,63,63,63,63,0,0);
 
@@ -149,6 +150,7 @@ class Output {
         do Output.create(124,12,12,12,12,12,12,12,12,12,0,0);  // |
         do Output.create(125,7,12,12,12,56,12,12,12,7,0,0);    // }
         do Output.create(126,38,45,25,0,0,0,0,0,0,0,0);        // ~
+        */
 
 	return;
     }
