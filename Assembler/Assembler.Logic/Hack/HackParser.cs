@@ -51,16 +51,20 @@ namespace Assembler.Logic.Hack
             "D-A",
             "A-D",
             "D&A",
+            "A&D",
             "D|A",
+            "A|D",
             "M",
             "!M",
             "-M",
             "M+1",
             "M-1",
             "D+M",
+            "M+D",
             "D-M",
             "M-D",
             "D&M",
+            "M&D",
             "D|M"
         };
 
