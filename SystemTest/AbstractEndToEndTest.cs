@@ -38,7 +38,7 @@ namespace SystemTest
                 var copyLibScript = $"{command} '{paramLib}' '{paramStagingDir}'";
                 ExecutePowershellScript(copyLibScript);
             }
-            var paramJackFiles = Path.Join(TestConfig.RepositoryRoot, $"SystemTest\\Samples\\{MyConfig.TestName}\\*.jack");
+            var paramJackFiles = Path.Join(TestConfig.RepositoryRoot, $"SystemTest\\Samples\\{MyConfig.TestName}\\*");
             var fullScript = $"{command} '{paramJackFiles}' '{paramStagingDir}'";
             ExecutePowershellScript(fullScript);
         }
@@ -69,9 +69,12 @@ namespace SystemTest
 
         private void Execute()
         {
-            // TODO: Execute on CPU emulator
+            var command = Path.Join(TestConfig.TECSSoftwareRoot, "CPUEmulator.bat");
+            var parameter = Path.GetFullPath(Path.Join(StagingDir, $"{MyConfig.TestName}.tst"));
+            var fullScript = $"& '{command}' '{parameter}'";
+            ExecutePowershellScript(fullScript);
         }
-        
+
         private void ExecutePowershellScript(string script)
         {
             var processStartInfo = new ProcessStartInfo();
@@ -90,6 +93,6 @@ namespace SystemTest
             if (process.ExitCode != 0) throw new Exception($"Out:\n{output}\nErr:\n{err}");
         }
 
-        public string StagingDir => Path.Join(TestConfig.RepositoryRoot, "\\SystemTest\\Staging\\");
+        public string StagingDir => Path.Join(TestConfig.RepositoryRoot, "SystemTest\\Staging\\");
     }
 }
