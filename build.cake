@@ -55,4 +55,14 @@ Task("Test")
         });
     });
 
+Task("SystemTest")
+    .IsDependentOn("Build")
+    .Does(() => {
+        System.Environment.SetEnvironmentVariable("TECS_RepoRoot", Context.Environment.WorkingDirectory.ToString());
+        DotNetTest("./SystemTest./SystemTest.sln", new DotNetTestSettings()
+        {
+            Configuration = configuration,
+        });
+    });
+
 RunTarget(target);

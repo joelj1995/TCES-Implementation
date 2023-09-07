@@ -4,7 +4,7 @@ namespace SystemTest
 {
     public abstract class AbstractEndToEndTest
     {
-        public abstract string TestName { get; }
+        public abstract EndToEndTestConfiguration MyConfig { get; }
 
         [SetUp]
         public void Setup()
@@ -35,7 +35,7 @@ namespace SystemTest
             var parameter2 = Path.Join(TestConfig.RepositoryRoot, $"SystemTest\\Staging\\");
             var fullScript = $"{command} '{parameter1}' '{parameter2}'";
             ExecutePowershellScript(fullScript);
-            parameter1 = Path.Join(TestConfig.RepositoryRoot, $"SystemTest\\Samples\\{TestName}\\*.jack");
+            parameter1 = Path.Join(TestConfig.RepositoryRoot, $"SystemTest\\Samples\\{MyConfig.TestName}\\*.jack");
             fullScript = $"{command} '{parameter1}' '{parameter2}'";
             ExecutePowershellScript(fullScript);
         }
@@ -66,7 +66,7 @@ namespace SystemTest
 
         private void Execute()
         {
-
+            // TODO: Execute on CPU emulator
         }
         
         private void ExecutePowershellScript(string script)

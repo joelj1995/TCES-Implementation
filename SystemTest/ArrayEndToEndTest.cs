@@ -8,6 +8,6 @@ namespace SystemTest
 {
     internal class ArrayEndToEndTest : AbstractEndToEndTest
     {
-        public override string TestName => "ArrayTest";
+        public override EndToEndTestConfiguration MyConfig => new EndToEndTestConfiguration("ArrayTest");
     }
 }
