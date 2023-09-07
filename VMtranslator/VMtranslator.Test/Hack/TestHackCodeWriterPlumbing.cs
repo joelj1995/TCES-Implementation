@@ -36,7 +36,7 @@ namespace VMtranslator.Test.Hack
                 @SP
                 M=D
                 // HackCodeGeneratorForFunctionCall
-                @RET_1
+                @_RET_1
                 D=A
                 @SP
                 A=M
@@ -92,7 +92,7 @@ namespace VMtranslator.Test.Hack
                 M=D
                 @Sys.init
                 0;JMP
-                (RET_1)
+                (_RET_1)
             ");
             codeWriter.writeInit();
             Assert.That(GetWriterText(), Does.EndWith(expected));

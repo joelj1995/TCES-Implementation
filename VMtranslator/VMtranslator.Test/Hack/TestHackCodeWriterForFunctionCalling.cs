@@ -12,7 +12,7 @@ namespace VMtranslator.Test.Hack
         public void TestWriteCall()
         {
             var expected = @"
-                @RET_1
+                @_RET_1
                 D=A
                 @SP
                 A=M
@@ -77,7 +77,7 @@ namespace VMtranslator.Test.Hack
                 // GOTO F
                 @FLOO
                 0;JMP
-                (RET_1)
+                (_RET_1)
             ";
             codeWriter.writeCall("FLOO", 2);
             Assert.That(GetWriterText(), Does.EndWith(cleanString(expected)));

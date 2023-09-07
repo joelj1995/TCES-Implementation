@@ -27,7 +27,7 @@ namespace VMtranslator.Core.Hack.CodeGenerators
 
         protected HackSymbol location(string name)
         {
-            return new HackSymbol($"{name}_{context.nextSymbolCookie()}");
+            return new HackSymbol($"{context.FileName}_{name}_{context.nextSymbolCookie()}");
         }
 
         protected HackScript popStackIntoD()

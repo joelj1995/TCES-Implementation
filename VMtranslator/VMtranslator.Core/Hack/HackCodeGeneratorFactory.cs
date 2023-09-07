@@ -60,7 +60,7 @@ namespace VMtranslator.Core.Hack
 
         public AbstractHackCodeGenerator label(string label)
         {
-            return new HackCodeGeneratorForScript(context, HackCommand.L(label));
+            return new HackCodeGeneratorForLabel(context, label);
         }
 
         public AbstractHackCodeGenerator creturn()

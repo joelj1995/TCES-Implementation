@@ -47,7 +47,7 @@ namespace VMtranslator.Test.Hack
         {
             var label = "UP";
             codeWriter.writeLabel(label);
-            Assert.That(GetWriterText(), Does.EndWith("(UP)"));
+            Assert.That(GetWriterText(), Does.EndWith("(_UP_1)"));
         }
     }
 }
