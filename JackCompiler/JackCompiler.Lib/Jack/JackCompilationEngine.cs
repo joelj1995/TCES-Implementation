@@ -189,7 +189,7 @@ namespace JackCompiler.Lib.Jack
                     case SymbolKind.STATIC: writer.WritePush(Segment.STATIC, symbols.IndexOf(symbolName)); break;
                     case SymbolKind.VAR: writer.WritePush(Segment.LOCAL, symbols.IndexOf(symbolName)); break;
                     case SymbolKind.ARG: writer.WritePush(Segment.ARG, symbols.IndexOf(symbolName)); break;
-                    default: if (!config.SkipSymbols) { throw new NotImplementedException(arrayOperation.ToString()); } break;
+                    default: if (!config.SkipSymbols) { throw new SyntaxException(tokenizer.ToXML(), LineNumber, semantics.ClassName); } break;
                 }
                 writer.WriteArithmetic(Command.ADD);
                 didWildArrayStuff = true;
@@ -211,7 +211,7 @@ namespace JackCompiler.Lib.Jack
                     case SymbolKind.STATIC: writer.WritePop(Segment.STATIC, symbols.IndexOf(symbolName)); break;
                     case SymbolKind.VAR: writer.WritePop(Segment.LOCAL, symbols.IndexOf(symbolName)); break;
                     case SymbolKind.ARG: writer.WritePop(Segment.ARG, symbols.IndexOf(symbolName)); break;
-                    default: if (!config.SkipSymbols) { throw new NotImplementedException(arrayOperation.ToString()); } break;
+                    default: if (!config.SkipSymbols) { throw new SyntaxException(tokenizer.ToXML(), LineNumber, semantics.ClassName); } break;
                 }
             }
             
@@ -304,7 +304,7 @@ namespace JackCompiler.Lib.Jack
                     case '|': writer.WriteArithmetic(Command.OR); break;
                     case '*': writer.WriteCall("Math.multiply", 2); break;
                     case '/': writer.WriteCall("Math.divide", 2); break;
-                    default: throw new NotImplementedException(op.ToString());
+                    default: throw new SyntaxException(tokenizer.ToXML(), LineNumber, semantics.ClassName);
                 }
             }
             semantics.EndScope("expression");
@@ -329,7 +329,7 @@ namespace JackCompiler.Lib.Jack
                         writer.WriteCall("String.appendChar", 2);
                     }
                 }
-                else throw new SyntaxException(tokenizer.ToXML(), LineNumber);
+                else throw new SyntaxException(tokenizer.ToXML(), LineNumber, semantics.ClassName);
             }
             else if (tokenizer.OnType(TokenType.IDENTIFIER))
             {
@@ -337,7 +337,7 @@ namespace JackCompiler.Lib.Jack
                 using (var _ = tokenizer.LookAhead())
                 {
                     tokenizer.Advance();
-                    if (tokenizer.OnSymbol('.')) termType = TermType.SUBROUTINE_CALL;
+                    if (tokenizer.OnSymbol('.') || tokenizer.OnSymbol('(')) termType = TermType.SUBROUTINE_CALL;
                     else if (tokenizer.OnSymbol('[')) termType = TermType.ARRAY_ENTRY;
                     else termType = TermType.VARIABLE;
                 }
@@ -361,7 +361,7 @@ namespace JackCompiler.Lib.Jack
                             case SymbolKind.STATIC: writer.WritePush(Segment.STATIC, symbols.IndexOf(symbolName)); break;
                             case SymbolKind.VAR: writer.WritePush(Segment.LOCAL, symbols.IndexOf(symbolName)); break;
                             case SymbolKind.ARG: writer.WritePush(Segment.ARG, symbols.IndexOf(symbolName)); break;
-                            default: if (!config.SkipSymbols) { throw new NotImplementedException(symbolType.ToString()); } break;
+                            default: if (!config.SkipSymbols) { throw new SyntaxException(tokenizer.ToXML(), LineNumber, semantics.ClassName); } break;
                         }
                         writer.WriteArithmetic(Command.ADD);
                         writer.WritePop(Segment.POINTER, 1);
@@ -375,11 +375,11 @@ namespace JackCompiler.Lib.Jack
                             case SymbolKind.STATIC: writer.WritePush(Segment.STATIC, symbols.IndexOf(symbolName)); break;
                             case SymbolKind.VAR: writer.WritePush(Segment.LOCAL, symbols.IndexOf(symbolName)); break;
                             case SymbolKind.ARG: writer.WritePush(Segment.ARG, symbols.IndexOf(symbolName)); break;
-                            default: if (!config.SkipSymbols) { throw new NotImplementedException(symbolType.ToString()); } break;
+                            default: if (!config.SkipSymbols) { throw new SyntaxException(tokenizer.ToXML(), LineNumber, semantics.ClassName); } break;
                         }
                     }
                 }
-                else throw new SyntaxException(tokenizer.ToXML(), LineNumber);
+                else throw new SyntaxException(tokenizer.ToXML(), LineNumber, semantics.ClassName);
             }
             else if (tokenizer.OnKeyWord(TokenizerExtensions.ConstantKeywords))
             {
@@ -390,7 +390,7 @@ namespace JackCompiler.Lib.Jack
                     case KeyWord.FALSE: writer.WritePush(Segment.CONST, 0); break;
                     case KeyWord.NULL: writer.WritePush(Segment.CONST, 0); break;
                     case KeyWord.THIS: writer.WritePush(Segment.POINTER, 0); break;
-                    default: throw new NotImplementedException(keyword.ToString());
+                    default: throw new SyntaxException(tokenizer.ToXML(), LineNumber, semantics.ClassName);
                 }
             }
             else if (tokenizer.OnSymbol(TokenizerExtensions.UnaryOpSymbols))
@@ -401,7 +401,7 @@ namespace JackCompiler.Lib.Jack
                 {
                     case '-': writer.WriteArithmetic(Command.NEG); break;
                     case '~': writer.WriteArithmetic(Command.NOT); break;
-                    default: throw new NotImplementedException(op.ToString());
+                    default: throw new SyntaxException(tokenizer.ToXML(), LineNumber, semantics.ClassName);
                 }
             }
             else if (tokenizer.OnSymbol('('))
@@ -411,7 +411,7 @@ namespace JackCompiler.Lib.Jack
                 semantics.ExpectSymbol(')');
             }
             else
-                throw new SyntaxException(tokenizer.ToXML(), LineNumber);
+                throw new SyntaxException(tokenizer.ToXML(), LineNumber, semantics.ClassName);
             semantics.EndScope("term");
         }
 
@@ -455,7 +455,7 @@ namespace JackCompiler.Lib.Jack
                 }
                 catch
                 {
-                    throw new SyntaxException(tokenizer.ToXML(), LineNumber);
+                    throw new SyntaxException(tokenizer.ToXML(), LineNumber, semantics.ClassName);
                 }
             }
             if (symbolKind == SymbolKind.NONE && nextSymbol == '(') // method call
@@ -483,14 +483,14 @@ namespace JackCompiler.Lib.Jack
                         case SymbolKind.STATIC: writer.WritePush(Segment.STATIC, symbols.IndexOf(symbolName)); break;
                         case SymbolKind.VAR: writer.WritePush(Segment.LOCAL, symbols.IndexOf(symbolName)); break;
                         case SymbolKind.ARG: writer.WritePush(Segment.ARG, symbols.IndexOf(symbolName)); break;
-                        default: if (!config.SkipSymbols) { throw new NotImplementedException(symbolKind.ToString()); } break;
+                        default: if (!config.SkipSymbols) { throw new SyntaxException(tokenizer.ToXML(), LineNumber, semantics.ClassName); } break;
                     }
                 }
                 semantics.ExpectSymbol('.');
                 var routineName = semantics.ConsumeIdentifier("subroutine");
                 fullCallIdentifier = $"{lhs}.{routineName}";
             }
-            else throw new SyntaxException(tokenizer.ToXML(), LineNumber);
+            else throw new SyntaxException(tokenizer.ToXML(), LineNumber, semantics.ClassName);
             semantics.ExpectSymbol('(');
             CompileExpressionList();
             semantics.ExpectSymbol(')');

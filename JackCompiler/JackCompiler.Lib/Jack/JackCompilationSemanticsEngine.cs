@@ -54,7 +54,7 @@ namespace JackCompiler.Lib.Jack
                     stringVal = tokenizer.StringVal();
                     WriteForDepth(tokenizer.ToXML());
                     break;
-                default: throw new SyntaxException(tokenizer.ToXML(), LineNumber);
+                default: throw new SyntaxException(tokenizer.ToXML(), LineNumber, ClassName);
             }
             tokenizer.Advance();
             return (intVal, stringVal);
@@ -63,7 +63,7 @@ namespace JackCompiler.Lib.Jack
         public string PeekIdentifier()
         {
             if (tokenizer.TokenType() != TokenType.IDENTIFIER)
-                throw new SyntaxException(tokenizer.ToXML(), LineNumber);
+                throw new SyntaxException(tokenizer.ToXML(), LineNumber, ClassName);
             return tokenizer.Identifier();
         }
 
@@ -95,7 +95,7 @@ namespace JackCompiler.Lib.Jack
         public string ExpectIdentifier(bool defined, string category, SymbolKind kind)
         {
             if (tokenizer.TokenType() != TokenType.IDENTIFIER)
-                throw new SyntaxException(tokenizer.ToXML(), LineNumber);
+                throw new SyntaxException(tokenizer.ToXML(), LineNumber, ClassName);
             if (config.ExtendedIdentifierXml)
             {
                 if (defined)
@@ -113,15 +113,15 @@ namespace JackCompiler.Lib.Jack
         public string ExpectType(bool allowVoid=true)
         {
             if (tokenizer.TokenType() == TokenType.KEYWORD && tokenizer.KeyWord() == KeyWord.VOID && !allowVoid)
-                throw new SyntaxException("void", LineNumber);
+                throw new SyntaxException("void", LineNumber, ClassName);
             if (tokenizer.TokenType() != TokenType.IDENTIFIER && (
                 tokenizer.TokenType() != TokenType.KEYWORD || 
                 !TokenizerExtensions.SubroutineTypes.Contains(tokenizer.KeyWord())))
             {
                 if (tokenizer.TokenType() == TokenType.KEYWORD)
-                    throw new SyntaxException(tokenizer.ToXML(), LineNumber);
+                    throw new SyntaxException(tokenizer.ToXML(), LineNumber, ClassName);
                 else
-                    throw new SyntaxException(tokenizer.ToXML(), LineNumber);
+                    throw new SyntaxException(tokenizer.ToXML(), LineNumber, ClassName);
             }
             var result = string.Empty;
             if (tokenizer.OnType(TokenType.KEYWORD))
@@ -136,9 +136,9 @@ namespace JackCompiler.Lib.Jack
         public KeyWord ExpectKeyword(ICollection<KeyWord> expected)
         {
             if (tokenizer.TokenType() != TokenType.KEYWORD)
-                throw new SyntaxException(tokenizer.ToXML(), LineNumber);
+                throw new SyntaxException(tokenizer.ToXML(), LineNumber, ClassName);
             if (!expected.Contains(tokenizer.KeyWord()))
-                throw new SyntaxException(tokenizer.ToXML(), LineNumber);
+                throw new SyntaxException(tokenizer.ToXML(), LineNumber, ClassName);
             WriteForDepth(tokenizer.ToXML());
             var result = tokenizer.KeyWord();
             tokenizer.Advance();
@@ -148,9 +148,9 @@ namespace JackCompiler.Lib.Jack
         public void ExpectKeyword(KeyWord expected)
         {
             if (tokenizer.TokenType() != TokenType.KEYWORD)
-                throw new SyntaxException(tokenizer.ToXML(), LineNumber);
+                throw new SyntaxException(tokenizer.ToXML(), LineNumber, ClassName);
             if (tokenizer.KeyWord() != expected) 
-                throw new SyntaxException(tokenizer.ToXML(), LineNumber);
+                throw new SyntaxException(tokenizer.ToXML(), LineNumber, ClassName);
             WriteForDepth(tokenizer.ToXML());
             tokenizer.Advance();
         }
@@ -158,9 +158,9 @@ namespace JackCompiler.Lib.Jack
         public char ExpectSymbol(ICollection<char> expected)
         {
             if (tokenizer.TokenType() != TokenType.SYMBOL)
-                throw new SyntaxException(tokenizer.ToXML(), LineNumber);
+                throw new SyntaxException(tokenizer.ToXML(), LineNumber, ClassName);
             if (!expected.Contains(tokenizer.Symbol()))
-                throw new SyntaxException(tokenizer.ToXML(), LineNumber);
+                throw new SyntaxException(tokenizer.ToXML(), LineNumber, ClassName);
             var result = tokenizer.Symbol();
             WriteForDepth(tokenizer.ToXML());
             tokenizer.Advance();
@@ -170,9 +170,9 @@ namespace JackCompiler.Lib.Jack
         public void ExpectSymbol(char expected)
         {
             if (tokenizer.TokenType() != TokenType.SYMBOL)
-                throw new SyntaxException(tokenizer.ToXML(), LineNumber);
+                throw new SyntaxException(tokenizer.ToXML(), LineNumber, ClassName);
             if (tokenizer.Symbol() != expected)
-                throw new SyntaxException(tokenizer.ToXML(), LineNumber);
+                throw new SyntaxException(tokenizer.ToXML(), LineNumber, ClassName);
             WriteForDepth(tokenizer.ToXML());
             tokenizer.Advance();
         }

@@ -1,1 +1,3 @@
 *.out
+Lib/*.vm
+SystemTest/Staging
