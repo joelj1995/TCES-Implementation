@@ -14,7 +14,7 @@ namespace SystemTest
         [Test]
         public void TestEndToEnd()
         {
-            CompileLib();
+            Clean();
             StageFiles();
             Compile();
             Translate();
@@ -22,28 +22,29 @@ namespace SystemTest
             Execute();
         }
 
-        private void CompileLib()
+        private void Clean()
         {
-            var command = Path.Join(TestConfig.RepositoryRoot, "JackCompiler\\HackCompiler.CLI\\bin\\Release\\net6.0\\JackCompiler.CLI.exe");
-            var parameter = Path.Join(TestConfig.RepositoryRoot, $"Lib");
-            var fullScript = $"& '{command}' '{parameter}'";
-            ExecutePowershellScript(fullScript);
+            ExecutePowershellScript($"Remove-Item -Force -Recurse '{StagingDir}'; Write-Host '';");
+            ExecutePowershellScript($"New-Item -Type Directory '{StagingDir}'");
         }
 
         private void StageFiles()
         {
             var command = "Copy-Item";
-            var parameter1 = Path.Join(TestConfig.RepositoryRoot, $"Lib\\*.vm");
-            var parameter2 = Path.Join(TestConfig.RepositoryRoot, $"SystemTest\\Staging\\{TestName}");
+            var parameter1 = Path.Join(TestConfig.RepositoryRoot, $"Lib\\*.jack");
+            var parameter2 = Path.Join(TestConfig.RepositoryRoot, $"SystemTest\\Staging\\");
             var fullScript = $"{command} '{parameter1}' '{parameter2}'";
+            ExecutePowershellScript(fullScript);
+            parameter1 = Path.Join(TestConfig.RepositoryRoot, $"SystemTest\\Samples\\{TestName}\\*.jack");
+            fullScript = $"{command} '{parameter1}' '{parameter2}'";
             ExecutePowershellScript(fullScript);
         }
 
         private void Compile()
         {
             var command = Path.Join(TestConfig.RepositoryRoot, "JackCompiler\\HackCompiler.CLI\\bin\\Release\\net6.0\\JackCompiler.CLI.exe");
-            var parameter = Path.Join(TestConfig.RepositoryRoot, $"SystemTest\\Samples\\{TestName}");
-            var fullScript = $"& '{command}' '{parameter}'";
+            var parameter = StagingDir;
+            var fullScript = $"& '{command}' '{parameter}\\'";
             ExecutePowershellScript(fullScript);
         }
 
@@ -79,5 +80,7 @@ namespace SystemTest
             process.WaitForExit();
             if (process.ExitCode != 0) throw new Exception($"Out:\n{output}\nErr:\n{err}");
         }
+
+        public string StagingDir => Path.Join(TestConfig.RepositoryRoot, "\\SystemTest\\Staging\\");
     }
 }
