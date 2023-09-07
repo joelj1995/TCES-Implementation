@@ -50,7 +50,10 @@ namespace SystemTest
 
         private void Translate()
         {
-
+            var command = Path.Join(TestConfig.RepositoryRoot, "VMTranslator\\VMTranslator.CLI\\bin\\Release\\net6.0\\VMTranslator.CLI.exe");
+            var parameter = StagingDir;
+            var fullScript = $"& '{command}' '{parameter}\\'";
+            ExecutePowershellScript(fullScript);
         }
 
         private void Assemble()
