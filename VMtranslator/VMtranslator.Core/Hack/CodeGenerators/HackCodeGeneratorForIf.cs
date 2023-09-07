@@ -17,7 +17,7 @@ namespace VMtranslator.Core.Hack.CodeGenerators
         {
             return 
                 popStackIntoD() + 
-                HackCommand.A(label) + 
+                HackCommand.A(routineLocation(label)) + 
                 HackCommand.C(null, "D", "JNE");
         }
 

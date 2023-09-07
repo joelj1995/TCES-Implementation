@@ -31,12 +31,15 @@ namespace SystemTest
         private void StageFiles()
         {
             var command = "Copy-Item";
-            var parameter1 = Path.Join(TestConfig.RepositoryRoot, $"Lib\\*.jack");
-            var parameter2 = Path.Join(TestConfig.RepositoryRoot, $"SystemTest\\Staging\\");
-            var fullScript = $"{command} '{parameter1}' '{parameter2}'";
-            ExecutePowershellScript(fullScript);
-            parameter1 = Path.Join(TestConfig.RepositoryRoot, $"SystemTest\\Samples\\{MyConfig.TestName}\\*.jack");
-            fullScript = $"{command} '{parameter1}' '{parameter2}'";
+            var paramStagingDir = Path.Join(TestConfig.RepositoryRoot, $"SystemTest\\Staging\\");
+            foreach (var import in MyConfig.LibImports)
+            {
+                var paramLib = Path.Join(TestConfig.RepositoryRoot, "Lib\\", $"{import}.jack");
+                var copyLibScript = $"{command} '{paramLib}' '{paramStagingDir}'";
+                ExecutePowershellScript(copyLibScript);
+            }
+            var paramJackFiles = Path.Join(TestConfig.RepositoryRoot, $"SystemTest\\Samples\\{MyConfig.TestName}\\*.jack");
+            var fullScript = $"{command} '{paramJackFiles}' '{paramStagingDir}'";
             ExecutePowershellScript(fullScript);
         }
 

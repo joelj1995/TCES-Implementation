@@ -30,6 +30,11 @@ namespace VMtranslator.Core.Hack.CodeGenerators
             return new HackSymbol($"{context.FileName}_{name}_{context.nextSymbolCookie()}");
         }
 
+        protected HackSymbol routineLocation(string name)
+        {
+            return new HackSymbol($"{context.FileName}_{context.Subroutine}_{name}");
+        }
+
         protected HackScript popStackIntoD()
         {
             return

@@ -30,6 +30,11 @@ namespace VMtranslator.Core.Hack
             context.FileName = fileName;
         }
 
+        public void setSubroutine(string routineName)
+        {
+            context.Subroutine = routineName;
+        }
+
         public void writeArithmetic(string command)
         {
             var generator = codeFactory.arithmetic(command);

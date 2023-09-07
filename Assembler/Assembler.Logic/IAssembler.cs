@@ -9,5 +9,7 @@ namespace Assembler.Logic
     public interface IAssembler
     {
         byte[] assemble(StreamReader assembly);
+        void BuildSymbolTable(StreamReader assembly);
+        string DumpSymbolTable();
     }
 }

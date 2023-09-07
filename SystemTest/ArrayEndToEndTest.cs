@@ -8,6 +8,7 @@ namespace SystemTest
 {
     internal class ArrayEndToEndTest : AbstractEndToEndTest
     {
-        public override EndToEndTestConfiguration MyConfig => new EndToEndTestConfiguration("ArrayTest");
+        public override EndToEndTestConfiguration MyConfig => new EndToEndTestConfiguration("ArrayTest", imports);
+        private static readonly ICollection<string> imports = new[] { "Array", "Memory", "Sys" };
     }
 }

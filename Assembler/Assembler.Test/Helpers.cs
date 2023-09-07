@@ -24,6 +24,8 @@ namespace Assembler.Test
             var comparePath = $"./Samples/{programName}.hack";
             using (var reader = new StreamReader(inputPath))
             {
+                assembler.BuildSymbolTable(reader);
+                var symbols = assembler.DumpSymbolTable();
                 var assembledBinary = assembler.assemble(reader);
                 var targetBinary = File.ReadAllBytes(comparePath);
                 if (Directory.Exists(TempPath))

@@ -33,6 +33,7 @@ namespace VMtranslator.Core.Hack
                         codeWriter.writeCall(parser.arg1(), parser.arg2());
                         break;
                     case CommandType.C_FUNCTION:
+                        codeWriter.setSubroutine(parser.arg1());
                         codeWriter.writeFunction(parser.arg1(), parser.arg2());
                         break;
                     case CommandType.C_GOTO:

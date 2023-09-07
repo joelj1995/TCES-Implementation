@@ -16,7 +16,7 @@ namespace VMtranslator.Test.Hack
         {
             var lines = new string[]
             {
-                "@UP",
+                "@__UP",
                 "0;JMP"
             };
             codeWriter.writeGoto("UP");
@@ -35,7 +35,7 @@ namespace VMtranslator.Test.Hack
                 "A=D",
                 "D=M",
                 // JUMP TO LABEL IF NON-ZERO
-                "@UP",
+                "@__UP",
                 "D;JNE"
             };
             codeWriter.writeIf("UP");
@@ -47,7 +47,7 @@ namespace VMtranslator.Test.Hack
         {
             var label = "UP";
             codeWriter.writeLabel(label);
-            Assert.That(GetWriterText(), Does.EndWith("(_UP_1)"));
+            Assert.That(GetWriterText(), Does.EndWith("(__UP)"));
         }
     }
 }

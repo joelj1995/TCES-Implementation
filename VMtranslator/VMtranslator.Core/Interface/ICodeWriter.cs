@@ -10,6 +10,7 @@ namespace VMtranslator.Core.Interface
     {
         public void close();
         public void setFileName(string fileName);
+        public void setSubroutine(string subroutine);
         public void writeArithmetic(string command);
         public void writeCall(string functionName, int args);
         public void writeFunction(string functionName, int numLocals);

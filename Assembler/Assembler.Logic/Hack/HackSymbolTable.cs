@@ -56,6 +56,11 @@ namespace Assembler.Logic.Hack
             return symbols[symbol];
         }
 
+        public ICollection<KeyValuePair<string, int>> getAllSymbols()
+        {
+            return symbols.ToList();
+        }
+
         private Dictionary<string, int> symbols = new Dictionary<string, int>();
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Assembler.Logic;
+using System.Text;
 
 internal class Program
 {
@@ -18,9 +19,22 @@ internal class Program
         var files = Directory.EnumerateFiles(args[0]);
         using (var writer = new BinaryWriter(File.Open(Path.Join(args[0], "Program.hack"), FileMode.Create)))
         {
-            foreach (var file in files)
+            var fileQueue = files.Where(f => f.EndsWith(".asm")).OrderBy(FilePriority).ThenBy(f => f);
+            foreach (var file in fileQueue)
             {
-                if (!file.EndsWith(".asm")) continue;
+                using (var reader = new StreamReader(file))
+                {
+                    Console.WriteLine($"Processing symbols for {file}");
+                    assembler.BuildSymbolTable(reader);
+                }
+            }
+            using (var symbolsWriter = new BinaryWriter(File.Open(Path.Join(args[0], "Symbols.pdb"), FileMode.Create)))
+            {
+                var data = Encoding.ASCII.GetBytes(assembler.DumpSymbolTable());
+                symbolsWriter.Write(data);
+            }
+            foreach (var file in fileQueue)
+            {
                 using (var reader = new StreamReader(file))
                 {
                     Console.WriteLine($"Assembling {file}");
@@ -28,6 +42,17 @@ internal class Program
                     writer.Write(assembledBinary);
                 }
             }
+            using (var symbolsWriter = new BinaryWriter(File.Open(Path.Join(args[0], "Symbols.pdb"), FileMode.Create)))
+            {
+                var data = Encoding.ASCII.GetBytes(assembler.DumpSymbolTable());
+                symbolsWriter.Write(data);
+            }
         }
+    }
+
+    private static int FilePriority(string filePath)
+    {
+        if (Path.GetFileName(filePath).Equals("Sys.asm")) return 0;
+        return 1;
     }
 }

@@ -14,8 +14,6 @@ namespace Assembler.Logic.Hack
         {
             try
             {
-                Symbols = new HackSymbolTable();
-                BuildSymbolTable(assembly);
                 assembly.BaseStream.Seek(0, SeekOrigin.Begin);
                 var binaryCode = GenerateBinaryCode(assembly);
                 return Encoding.ASCII.GetBytes(binaryCode);
@@ -30,7 +28,8 @@ namespace Assembler.Logic.Hack
 
         public void BuildSymbolTable(StreamReader assembly)
         {
-            var parser = new HackParser(assembly);
+            var parser = HackParser.Next(parserInstance, assembly, false);
+            this.parserInstance = parser;
             while (parser.hasMoreCommands())
             {
                 parser.advance();
@@ -39,10 +38,21 @@ namespace Assembler.Logic.Hack
             }
         }
 
+        public string DumpSymbolTable()
+        {
+            var sb = new StringBuilder();
+            foreach (var symbol in Symbols.getAllSymbols())
+            {
+                sb.AppendLine($"{symbol.Key} {symbol.Value}");
+            }
+            return sb.ToString();
+        }
+
         public string GenerateBinaryCode(StreamReader assembly)
         {
             string result = String.Empty;
-            var parser = new HackParser(assembly);
+            var parser = HackParser.Next(parserInstance, assembly, true);
+            this.parserInstance = parser;
             while (parser.hasMoreCommands())
             {
                 parser.advance();
@@ -81,5 +91,6 @@ namespace Assembler.Logic.Hack
         private static string A_CODE = "0";
         private static string C_CODE = "111";
         private static string C_CODE_K = "110";
+        private HackParser? parserInstance = null;
     }
 }

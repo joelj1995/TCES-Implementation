@@ -16,7 +16,7 @@ namespace VMtranslator.Core.Hack.CodeGenerators
 
         public override HackScript getCode()
         {
-            var labelLocation = location(label);
+            var labelLocation = routineLocation(label);
             return HackCommand.L(labelLocation).toScript();
         }
 

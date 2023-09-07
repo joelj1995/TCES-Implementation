@@ -8,11 +8,13 @@ namespace SystemTest
 {
     public class EndToEndTestConfiguration
     {
-        public EndToEndTestConfiguration(string TestName) 
+        public EndToEndTestConfiguration(string testName, ICollection<string> imports) 
         {
-            this.TestName = TestName;
+            this.TestName = testName;
+            this.LibImports = imports;
         }
 
         public string TestName { get; private set; }
+        public ICollection<string> LibImports { get; private set; }
     }
 }

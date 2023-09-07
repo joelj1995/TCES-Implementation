@@ -17,7 +17,8 @@ namespace Assembler.Logic.Hack
     public class HackParser
     {
         public int LineNumber { get => lineNumber; }
-        public int LogicalPosition { get => logicalPosition; }
+        public int LogicalPosition { get; private set; }
+        public bool WriteMode { get; private set; }
 
         public static readonly string?[] Dests =
         {
@@ -80,9 +81,26 @@ namespace Assembler.Logic.Hack
             "JMP"
         };
 
-        public HackParser(StreamReader inputStream) 
+        public HackParser(StreamReader inputStream)
+        {
+            this.inputStream = inputStream;
+            this.LogicalPosition = 0;
+            this.WriteMode = true;
+        }
+
+        private HackParser(StreamReader inputStream, int fileOffset, bool writeMode) 
         { 
             this.inputStream = inputStream;
+            this.LogicalPosition = fileOffset;
+            this.WriteMode = writeMode;
+        }
+
+        public static HackParser Next(HackParser? parser, StreamReader inputStream, bool forWrite)
+        {
+            if (parser == null) return new HackParser(inputStream, 0, forWrite);
+            var offset = parser.LogicalPosition;
+            if (!parser.WriteMode && forWrite) offset = 0;
+            return new HackParser(inputStream, offset, forWrite);
         }
 
         public bool hasMoreCommands()
@@ -95,7 +113,7 @@ namespace Assembler.Logic.Hack
             currentCommand = inputStream.ReadLine();
             lineNumber++;
             if (commandType() == CommandType.C_COMMAND || commandType() == CommandType.A_COMMAND)
-                logicalPosition++;
+                LogicalPosition++;
         }
 
         public CommandType commandType()
@@ -198,6 +216,5 @@ namespace Assembler.Logic.Hack
         private StreamReader inputStream;
         private string? currentCommand = null;
         private int lineNumber = 0;
-        private int logicalPosition = 0;
     }
 }

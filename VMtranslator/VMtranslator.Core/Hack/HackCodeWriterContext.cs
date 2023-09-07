@@ -11,6 +11,7 @@ namespace VMtranslator.Core.Hack
         public int StaticSegmentPointerValue { get; set; } = 100;
         public bool InitWritten { get => initWritten; }
         public string? FileName { get; set; } = null;
+        public string? Subroutine { get; set; } = null;
 
         public int nextSymbolCookie()
         {

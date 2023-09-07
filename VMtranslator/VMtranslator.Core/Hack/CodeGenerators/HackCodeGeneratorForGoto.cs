@@ -15,7 +15,7 @@ namespace VMtranslator.Core.Hack.CodeGenerators
 
         public override HackScript getCode()
         {
-            return HackCommand.A(label) + HackCommand.C(null, "0", "JMP");
+            return HackCommand.A(routineLocation(label)) + HackCommand.C(null, "0", "JMP");
         }
 
         private readonly string label;
